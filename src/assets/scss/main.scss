@@ -1,0 +1,26 @@
+$gray-darker: #444444;
+$gray-dark: #696969;
+$gray: #999999;
+$gray-light: #cccccc;
+$gray-lighter: #ececec;
+$gray-lightest: lighten($gray-lighter, 4%);
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #f0f0f0;
+}
+
+body {
+  color: $gray;
+  font-size: 62.5%;
+  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding: 1rem;
+}
