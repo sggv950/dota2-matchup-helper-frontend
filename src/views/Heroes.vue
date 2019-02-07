@@ -1,8 +1,53 @@
 <template>
-  <section class="hero-container">
-    <button @click="reset">Reset</button>
-    
-    <div class="pick-dashboard-container">
+  <section class="main-wrapper">
+    <!-- <button @click="reset">Reset</button> -->
+    <header class="team-picks">
+      <div class="team your-team">
+        <!-- <button @click="handlePickHero('yourTeam')">add hero</button> -->
+        <hero-pick
+          v-for="(pick,index) in 5"
+          :pick="picks.yourTeam[index]"
+          :key="index"
+          @removeHeroPick="handleRemoveHeroPick($event, 'yourTeam')"
+        ></hero-pick>
+        <i class="fas fa-arrow-left" :class="{active: team === 'yourTeam'}"></i>
+        <button
+          class="btn-pick your-team"
+          :class="{active: team === 'yourTeam'}"
+          :disabled="team === 'yourTeam'"
+          @click="handlePickHero('yourTeam')"
+        >
+          <span>{{this.team === 'yourTeam' ? 'Picking' : 'Pick'}}</span> for your team
+        </button>
+      </div>
+
+      <img
+        src="https://steamcdn-a.akamaihd.net/apps/dota2/images/blog/play/dota_logo.png"
+        class="logo"
+      >
+
+      <div class="team rival-team">
+        <!-- <button @click="handlePickHero('rivalTeam')">add hero</button> -->
+        <button
+          class="btn-pick rival-team"
+          :class="{active: team === 'rivalTeam'}"
+          :disabled="team === 'rivalTeam'"
+          @click="handlePickHero('rivalTeam')"
+        >
+          <span>{{this.team === 'rivalTeam' ? 'Picking' : 'Pick'}}</span> for rival team
+        </button>
+        <i class="fas fa-arrow-right" :class="{active: team === 'rivalTeam'}"></i>
+        <hero-pick
+          v-for="(pick,index) in 5"
+          :pick="picks.rivalTeam[index]"
+          :key="index"
+          @removeHeroPick="handleRemoveHeroPick($event, 'rivalTeam')"
+        ></hero-pick>
+      </div>
+    </header>
+
+    <hero-list :heroes="heroes" :team="team" :picks="picks" @selectedHero="selectHero"></hero-list>
+    <!-- <div class="pick-dashboard-container">
       <div
         class="top-recommends"
         v-if="!isShownHeroList && (picks.yourTeam.length || picks.rivalTeam.length)"
@@ -18,40 +63,8 @@
           ></hero-preview>
         </ul>
       </div>
-      <div class="team-picks" v-if="!isShownHeroList">
-        <h3>Your team</h3>
-        <div class="team your-team">
-        <!-- <div class="team your-team" v-if="!isShownHeroList || (isShownHeroList && (team === 'yourTeam' || !team))"> -->
-          <button @click="handlePickHero('yourTeam')">add hero</button>
-          <hero-pick
-            v-for="(pick,index) in 5"
-            :pick="picks.yourTeam[index]"
-            :key="index"
-            @removeHeroPick="handleRemoveHeroPick($event, 'yourTeam')"
-          ></hero-pick>
-        </div>
-        
-        <h3>Rival team</h3>
-        <div class="team rival-team">
-        <!-- <div class="team rival-team" v-if="!isShownHeroList || (isShownHeroList && (team === 'rivalTeam' || !team))"> -->
-          <button @click="handlePickHero('rivalTeam')">add hero</button>
-          <hero-pick 
-            v-for="(pick,index) in 5" 
-            :pick="picks.rivalTeam[index]" 
-            :key="index"
-            @removeHeroPick="handleRemoveHeroPick($event, 'rivalTeam')"
-          ></hero-pick>
-        </div>
-      </div>
-    </div>
-        <hero-list
-        :heroes="heroes"
-        :team="team"
-        :picks="picks"
-        v-if="isShownHeroList"
-        @selectedHero="selectHero"
-        @close="closeList"
-      ></hero-list>
+      
+    </div>-->
   </section>
 </template>
 
@@ -63,23 +76,18 @@ export default {
   data() {
     return {
       isShownHeroList: false,
-      team: null
+      team: 'yourTeam'
     };
   },
   created() {
     this.$store.dispatch({ type: "getHeroes" });
   },
   methods: {
-    toggleHeroList() {
-      this.isShownHeroList = !this.isShownHeroList;
-    },
     handlePickHero(pickingTeam) {
       this.team = pickingTeam;
-      this.toggleHeroList();
     },
     selectHero(pick) {
       this.$store.dispatch({ type: "addTeamPicks", pick });
-      this.toggleHeroList();
     },
     reset() {
       this.$store.dispatch({ type: "reset" });
@@ -87,9 +95,6 @@ export default {
     handleRemoveHeroPick(hero, team) {
       var pick = { hero, team };
       this.$store.dispatch({ type: "removeTeamPicks", pick });
-    },
-    closeList(){
-      this.toggleHeroList();
     }
   },
   computed: {
@@ -113,53 +118,46 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.pick-dashboard-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  padding: 30px;
-}
+<style lang="scss">
+// .top-recommends {
+//   border: 2px solid black;
+//   background-color: beige;
+//   width: 25%;
+//   h5 {
+//     color: black;
+//     padding: 10px;
+//     margin: 0;
+//   }
+// }
 
-.top-recommends {
-  border: 2px solid black;
-  background-color: beige;
-  width: 25%;
-  h5 {
-    color: black;
-    padding: 10px;
-    margin: 0;
-  }
-}
+// .top-recommended-list {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-around;
+//   flex-wrap: wrap;
+//   list-style: none;
+//   padding: 0;
+// }
 
-.top-recommended-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  list-style: none;
-  padding: 0;
-}
+// .top-recommended-list-item {
+//   margin: 0 auto;
+// }
 
-.top-recommended-list-item {
-  margin: 0 auto;
-}
+// .fade-enter-active, .fade-leave-active {
+//   transition: opacity 0.2s;
+// }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.2s;
-}
+// .team-picks {
+//   width: 65%;
+// }
 
-.team-picks {
-  width: 65%;
-}
-
-.team {
-  background-color: gray;
-  margin: 0 auto;
-  height: 130px;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
+// .team {
+//   background-color: gray;
+//   margin: 0 auto;
+//   height: 130px;
+//   width: 100%;
+//   display: flex;
+//   justify-content: space-around;
+//   align-items: center;
+// }
 </style>

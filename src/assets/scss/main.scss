@@ -1,9 +1,19 @@
+@import 'normalize.scss';
+
 $gray-darker: #444444;
 $gray-dark: #696969;
 $gray: #999999;
 $gray-light: #cccccc;
 $gray-lighter: #ececec;
+$white: #fff;
 $gray-lightest: lighten($gray-lighter, 4%);
+$gray-dota: #2F363D;
+$gray-dota-b: #232429;
+$gray-dota-c: #0f0f10;
+$shadow-a: 0px 0px 10px 0px rgba(0,0,0, .5);
+$green-neon: #22e461;
+$header-height: 70px;
+$footer-height: 66px;
 
 *,
 *::before,
@@ -12,15 +22,233 @@ $gray-lightest: lighten($gray-lighter, 4%);
 }
 
 html {
-  background-color: #f0f0f0;
+  height: 100%;
 }
 
 body {
-  color: $gray;
-  font-size: 62.5%;
-  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: $gray-light;
+  font-family: 'Abel', sans-serif;
   font-style: normal;
+  font-size: 16px;
   font-weight: 400;
-  letter-spacing: 0;
-  padding: 1rem;
+  height: 100%;
+  background-color: $gray-dota;
 }
+
+
+header.team-picks{
+  top: 0;
+  display: flex;
+  height: $header-height;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $gray-dota-b;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  padding: 15px;
+  box-shadow: $shadow-a;
+  .logo{
+    ////changes////
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 56px;
+    transform: translate(-50%, -50%);
+
+  }
+  .fa-arrow-left, .fa-arrow-right{
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+    &.active{
+      visibility: visible;
+      color: $green-neon;
+      animation: nudge 0.4s ease-in-out infinite alternate;
+    }
+  }
+  .fa-arrow-left{
+    margin-left: 8px;
+  }
+  .fa-arrow-right{
+    margin-right: 8px;
+  }
+}
+
+.team{
+  display: flex;
+}
+
+
+.hero-preview {
+  list-style: none;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+  img{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+  }
+  &:hover{
+    .icon-remove-hero{
+      opacity: 1;
+    }  
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.selected{
+    img:hover{
+      opacity: .7;
+    }
+  }
+  .icon-remove-hero{
+    position: absolute;
+    font-size: 22px;
+    color: #fff;
+    box-shadow: $shadow-a;
+    opacity: 0;
+  }
+}
+
+.your-team .hero-preview{
+  &:not(:last-child){
+    margin-right: 10px;
+  }  
+}
+
+.rival-team .hero-preview{
+  &:not(:first-child){
+    margin-left: 10px;
+  }  
+}
+
+.btn-pick{
+  border: 1px solid $gray-light;
+  background: url('https://steamcdn-a.akamaihd.net/apps/dota2/images/header/header_bg.png');
+  color: $white;
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 0.8em 1.2em;
+  cursor: pointer;
+  &:hover{
+    opacity: 0.7;
+  }
+  &:disabled{
+    background: none;
+    color: $green-neon;
+    border: 0;
+    cursor: unset;
+    &:hover{
+      opacity: 1;
+    }
+  }
+  &.rival-team{
+    margin-right: 10px;
+  }
+  &.your-team{
+    margin-left: 10px;
+  }
+}
+
+@keyframes nudge {
+  0% {
+    transform: translate(0, 0);
+  }
+  
+  100% {
+    transform: translate(3px, 0);
+  }
+}
+
+
+.cards{
+  width: 100%;
+  margin: 0;
+  padding: 0 15px;
+  list-style: none;
+  margin-top: $header-height + 15px;
+  margin-bottom: $footer-height + 15px;
+  display: grid;
+  grid-gap: 15px;
+  // flex-wrap: wrap;
+  // justify-content: space-between;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+
+
+.list__hero{
+ 
+  border-radius: 4px;
+  overflow: hidden;
+  background: lighten($gray-dota-c, 4%);
+  transition: all 100ms linear;
+  top: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  &:hover{
+    transform: scale(1.05);
+    top: -5px;
+    box-shadow: $shadow-a;
+    z-index: 1;
+  }
+  
+}
+
+.card__image {
+  width: 100%;
+} 
+
+.card__title {
+  text-align: center;
+  padding: 1.3em .5em;
+  font-size: 11px;
+  line-height: 0 !important;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.filter-footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: $gray-dota-c;
+  z-index: 1;
+}
+
+.filter-footer{
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter:not(:first-child) { 
+
+  margin-right: 20px
+}
+
+.switch-all-rec{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  input{
+    height: 22px;
+  }
+}
+
+.filter-part{
+  border: 1px solid white;
+    border-radius: 5px;
+    background: white;
+    padding: 2px 5px;
+    height: 24px;
+}
+

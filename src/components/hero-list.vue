@@ -1,12 +1,13 @@
 <template>
-  <section>
-    <button @click="goBack()">Close</button>
+  <section ref="list">
+    <!-- <button @click="goBack()">Close</button> -->
     <hero-filter @selectedListFilter="handleListFilter" :team="team" :picks="picks"></hero-filter>
     <ul class="cards">
       <hero-preview
         v-for="hero in filteredHeroes"
         :hero="hero"
         :key="hero.id"
+        :forList="forList"
         @click.native="selectHero(hero)"
       ></hero-preview>
     </ul>
@@ -24,6 +25,7 @@ export default {
   },
   data() {
     return {
+      forList: true,
       listFilter: {
         name: "",
         role: "All",
@@ -81,9 +83,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-}
+
 </style>
