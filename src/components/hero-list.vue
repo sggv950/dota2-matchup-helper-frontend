@@ -36,13 +36,18 @@ export default {
   methods: {
     selectHero(hero) {
       const pick = { hero, team: this.team };
-      this.$emit("selectedHero", pick);
+      if (
+        (this.team === "yourTeam" && this.picks.yourTeam.length < 5) ||
+        (this.team === "rivalTeam" && this.picks.rivalTeam.length < 5)
+      ) {
+        this.$emit("selectedHero", pick);
+      }
     },
     handleListFilter(filter) {
       this.listFilter = filter;
     },
     goBack() {
-      this.$emit('close');
+      this.$emit("close");
     }
   },
   computed: {
@@ -83,5 +88,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 </style>

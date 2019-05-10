@@ -1,7 +1,7 @@
 <template>
   <section class="main-wrapper">
-    <!-- <button @click="reset">Reset</button> -->
     <header class="team-picks">
+    <!-- <button @click="reset">Reset</button> -->
       <div class="team your-team">
         <!-- <button @click="handlePickHero('yourTeam')">add hero</button> -->
         <hero-pick
@@ -24,6 +24,7 @@
       <img
         src="https://steamcdn-a.akamaihd.net/apps/dota2/images/blog/play/dota_logo.png"
         class="logo"
+        @click="reset"
       >
 
       <div class="team rival-team">
