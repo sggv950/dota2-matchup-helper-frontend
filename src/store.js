@@ -58,6 +58,7 @@ export default new Vuex.Store({
   },
   getters: {
     heroes: state => state.heroes,
-    picks: state => state.picks
+    picks: state => state.picks,
+    getHeroByName: state => heroName => state.heroes.find(hero => hero.localized_name === heroName)
   }
 });

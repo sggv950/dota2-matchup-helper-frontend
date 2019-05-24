@@ -10,12 +10,13 @@
           :key="index"
           @removeHeroPick="handleRemoveHeroPick($event, 'yourTeam')"
         ></hero-pick>
-        <i class="fas fa-arrow-left" :class="{active: team === 'yourTeam'}"></i>
+        <i class="fas fa-arrow-left" :class="{active: team === 'yourTeam'}" v-if="stillPicking"></i>
         <button
           class="btn-pick your-team"
           :class="{active: team === 'yourTeam'}"
           :disabled="team === 'yourTeam'"
           @click="handlePickHero('yourTeam')"
+          v-if="stillPicking"
         >
           <span>{{this.team === 'yourTeam' ? 'Picking' : 'Pick'}}</span> for your team
         </button>
@@ -34,10 +35,11 @@
           :class="{active: team === 'rivalTeam'}"
           :disabled="team === 'rivalTeam'"
           @click="handlePickHero('rivalTeam')"
+          v-if="stillPicking"
         >
           <span>{{this.team === 'rivalTeam' ? 'Picking' : 'Pick'}}</span> for rival team
         </button>
-        <i class="fas fa-arrow-right" :class="{active: team === 'rivalTeam'}"></i>
+        <i class="fas fa-arrow-right" :class="{active: team === 'rivalTeam'}" v-if="stillPicking"></i>
         <hero-pick
           v-for="(pick,index) in 5"
           :pick="picks.rivalTeam[index]"
@@ -47,7 +49,12 @@
       </div>
     </header>
 
-    <hero-list :heroes="heroes" :team="team" :picks="picks" @selectedHero="selectHero"></hero-list>
+    <hero-list 
+      :heroes="heroes" 
+      :team="team" 
+      :picks="picks" 
+      @selectedHero="selectHero"
+    ></hero-list>
     <!-- <div class="pick-dashboard-container">
       <div
         class="top-recommends"
@@ -72,7 +79,7 @@
 <script>
 import heroList from "@/components/hero-list";
 import heroPick from "@/components/hero-pick";
-import heroPreview from "@/components/hero-preview";
+// import heroPreview from "@/components/hero-preview";
 export default {
   data() {
     return {
@@ -109,12 +116,15 @@ export default {
       return this.heroes.filter((hero, index) => {
         return index < 5;
       });
+    },
+    stillPicking(){
+      return this.picks.yourTeam.length < 5 || this.picks.rivalTeam.length < 5;
     }
   },
   components: {
     heroList,
     heroPick,
-    heroPreview
+    // heroPreview
   }
 };
 </script>
